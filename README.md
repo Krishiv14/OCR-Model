@@ -1,94 +1,94 @@
-# 🔍 OCR Validation Tool - Streamlit App
+# OCR Validation Tool - Streamlit App
 
 A powerful Streamlit application for validating OCR (Optical Character Recognition) results by comparing extracted text from test images against master/reference images using the Moondream Vision Language Model.
 
-## 🚀 Features
+## Features
 
-- **Image Upload**: Support for JPG, JPEG, and PNG image formats
-- **OCR Text Extraction**: Extract text from images using Moondream's advanced VLM
-- **Text Comparison**: Compare extracted text with master/reference text
-- **Validation Results**: Clear pass/fail status with detailed analysis
-- **Secure API Key Management**: Store API keys securely using Streamlit's session state or secrets
-- **User-Friendly Interface**: Clean, intuitive interface with real-time results
+- Image Upload: Support for JPG, JPEG, and PNG image formats
+- OCR Text Extraction: Extract text from images using Moondream's advanced VLM
+- Text Comparison: Compare extracted text with master/reference text
+- Validation Results: Clear pass/fail status with detailed analysis
+- Secure API Key Management: Store API keys securely using Streamlit's session state or secrets
+- User-Friendly Interface: Clean, intuitive interface with real-time results
 
-## 📋 Prerequisites
+## Prerequisites
 
 - Python 3.9 or higher
 - Moondream API key (get one at [console.moondream.ai](https://console.moondream.ai))
 
-## 🛠️ Installation
+## Installation
 
-1. **Clone or download the project files**
+1. Clone or download the project files
 
-2. **Create a virtual environment (recommended)**:
+2. Create a virtual environment (recommended):
    ```bash
    python -m venv venv
    source venv/bin/activate  # On Windows: venv\Scripts\activate
    ```
 
-3. **Install dependencies**:
+3. Install dependencies:
    ```bash
    pip install -r requirements.txt
    ```
 
-4. **Set up your API key** (choose one method):
+4. Set up your API key (choose one method):
 
-   **Method 1: Using Streamlit Secrets (Recommended for deployment)**
+   Method 1: Using Streamlit Secrets (Recommended for deployment)
    - Copy `.streamlit/secrets_sample.toml` to `.streamlit/secrets.toml`
    - Edit `.streamlit/secrets.toml` and add your API key:
      ```toml
      MOONDREAM_API_KEY = "your_actual_api_key_here"
      ```
 
-   **Method 2: Using the Web Interface**
+   Method 2: Using the Web Interface
    - Enter your API key directly in the sidebar when running the app
 
-## 🚀 Running the Application
+## Running the Application
 
-1. **Start the Streamlit server**:
+1. Start the Streamlit server:
    ```bash
    streamlit run ocr_validation_app.py
    ```
 
-2. **Open your browser** and navigate to `http://localhost:8501`
+2. Open your browser and navigate to `http://localhost:8501`
 
-3. **Configure your API key** in the sidebar if you haven't used the secrets method
+3. Configure your API key in the sidebar if you haven't used the secrets method
 
-4. **Upload your images**:
+4. Upload your images:
    - Upload a test image (the image you want to extract text from)
    - Upload a master image (the reference image to compare against)
 
-5. **Click "Validate OCR"** to process the images and see results
+5. Click "Validate OCR" to process the images and see results
 
-## 📖 How to Use
+## How to Use
 
 ### Step-by-Step Guide
 
-1. **Setup**: Ensure you have your Moondream API key ready
-2. **Upload Images**: 
-   - **Test Image**: The image you want to extract text from
-   - **Master Image**: The reference image with known correct text
-3. **Run Validation**: Click the "Validate OCR" button
-4. **Review Results**: 
-   - ✅ **All Good**: Text matches perfectly
-   - ❌ **Reject**: Text doesn't match (see detailed analysis)
+1. Setup: Ensure you have your Moondream API key ready
+2. Upload Images: 
+   - Test Image: The image you want to extract text from
+   - Master Image: The reference image with known correct text
+3. Run Validation: Click the "Validate OCR" button
+4. Review Results: 
+   - All Good: Text matches perfectly
+   - Reject: Text doesn't match (see detailed analysis)
 
 ### Understanding Results
 
-- **Status**: Overall validation result (All Good/Reject)
-- **Extracted Text**: Text found in your test image
-- **Master Text**: Text found in your reference image
-- **Comparison**: Match/Mismatch indicator
-- **Detailed Analysis**: Character-by-character comparison for mismatches
+- Status: Overall validation result (All Good/Reject)
+- Extracted Text: Text found in your test image
+- Master Text: Text found in your reference image
+- Comparison: Match/Mismatch indicator
+- Detailed Analysis: Character-by-character comparison for mismatches
 
-## 🔐 API Key Security
+## API Key Security
 
 ### Best Practices
 
-1. **Never commit API keys to version control**
-2. **Use environment variables or Streamlit secrets**
-3. **Set appropriate usage limits on your API key**
-4. **Monitor your API usage regularly**
+1. Never commit API keys to version control
+2. Use environment variables or Streamlit secrets
+3. Set appropriate usage limits on your API key
+4. Monitor your API usage regularly
 
 ### Deployment
 
@@ -100,7 +100,7 @@ When deploying to Streamlit Community Cloud:
    MOONDREAM_API_KEY = "your_actual_api_key_here"
    ```
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 ocr-validation-tool/
@@ -113,7 +113,7 @@ ocr-validation-tool/
     └── secrets_sample.toml  # API key template
 ```
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 
@@ -141,7 +141,7 @@ ocr-validation-tool/
 - Ensure text in images is legible and well-contrasted
 - Avoid extremely large image files (resize if needed)
 
-## 🔧 Customization
+## Customization
 
 ### Modifying the Validation Logic
 
@@ -157,7 +157,7 @@ Modify the Streamlit configuration in `.streamlit/config.toml` to change:
 - Layout settings
 - Upload size limits
 
-## 📚 About Moondream
+## About Moondream
 
 Moondream is a small but powerful vision-language model that excels at:
 - Text extraction from images (OCR)
@@ -167,11 +167,11 @@ Moondream is a small but powerful vision-language model that excels at:
 
 Learn more at [moondream.ai](https://moondream.ai)
 
-## 🤝 Contributing
+## Contributing
 
 Feel free to submit issues, feature requests, or pull requests to improve this tool.
 
-## 📄 License
+## License
 
 This project is provided as-is for educational and practical use.
 

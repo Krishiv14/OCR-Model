@@ -1,8 +1,8 @@
-# 📁 Project Files Overview
+# Project Files Overview
 
 This OCR Validation Tool project contains the following files and directories:
 
-## 🎯 Core Application Files
+## Core Application Files
 
 ### `ocr_validation_app.py`
 **Main Streamlit Application**
@@ -17,7 +17,7 @@ This OCR Validation Tool project contains the following files and directories:
 - Lists all required packages and versions
 - Use with `pip install -r requirements.txt`
 
-## ⚙️ Configuration Files
+## Configuration Files
 
 ### `.streamlit/config.toml`
 **Streamlit Configuration**
@@ -36,7 +36,7 @@ This OCR Validation Tool project contains the following files and directories:
 - Prevents sensitive files from being committed
 - Excludes API keys, cache files, and virtual environments
 
-## 📚 Documentation
+## Documentation
 
 ### `README.md`
 **Complete User Guide**
@@ -46,7 +46,7 @@ This OCR Validation Tool project contains the following files and directories:
 - Troubleshooting tips
 - Deployment guidelines
 
-## 🛠️ Utility Scripts
+## Utility Scripts
 
 ### `ocr_validation_cli.py`
 **Command-Line Version**
@@ -62,7 +62,7 @@ This OCR Validation Tool project contains the following files and directories:
 - Useful for initial testing and demos
 - Run with: `python create_sample_images.py`
 
-## 📊 Visual Assets
+## Visual Assets
 
 ### `ocr_workflow_chart.png`
 **Workflow Diagram**
@@ -72,7 +72,7 @@ This OCR Validation Tool project contains the following files and directories:
 
 ---
 
-## 🚀 Quick Start Commands
+## Quick Start Commands
 
 ```bash
 # 1. Install dependencies
@@ -87,14 +87,14 @@ streamlit run ocr_validation_app.py
 # 4. Open browser to http://localhost:8501
 ```
 
-## 📝 Next Steps
+## Next Steps
 
-1. **Get API Key**: Sign up at https://console.moondream.ai
-2. **Configure Secrets**: Add your API key to `.streamlit/secrets.toml`
-3. **Test the App**: Use the sample images or your own images
-4. **Deploy**: Follow the README for deployment instructions
+1. Get API Key: Sign up at https://console.moondream.ai
+2. Configure Secrets: Add your API key to `.streamlit/secrets.toml`
+3. Test the App: Use the sample images or your own images
+4. Deploy: Follow the README for deployment instructions
 
-## 🔐 Security Notes
+## Security Notes
 
 - Never commit `.streamlit/secrets.toml` to version control
 - Use environment variables for production deployments
@@ -104,6 +104,6 @@ streamlit run ocr_validation_app.py
 ---
 
 **Total Files Created**: 10 files + 1 directory (.streamlit/)
-**Ready to Use**: Yes ✅
-**Documentation**: Complete ✅
-**Examples**: Included ✅
+**Ready to Use**: Yes
+**Documentation**: Complete
+**Examples**: Included

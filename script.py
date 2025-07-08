@@ -7,33 +7,12 @@ import moondream as md
 from PIL import Image
 import io
 
-# Configure page settings
-st.set_page_config(
-    page_title="OCR Validation Tool",
-    page_icon="🔍",
-    layout="wide",
-    initial_sidebar_state="expanded"
-)
+# Remove page config
 
 def init_model():
-    """Initialize the Moondream model with API key"""
+    """Initialize the Moondream model with hardcoded API key"""
     try:
-        # Try to get API key from secrets first, then from session state
-        api_key = None
-        
-        # Check secrets first (for production deployment)
-        try:
-            api_key = st.secrets.get("MOONDREAM_API_KEY")
-        except:
-            pass
-        
-        # If not in secrets, check session state
-        if not api_key:
-            api_key = st.session_state.get("moondream_api_key")
-        
-        if not api_key:
-            return None
-            
+        api_key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXlfaWQiOiJmNzBmZjA2Yy0xOWNiLTQ2MjYtYTQ3Ny0wY2I1ZThjY2UwYTgiLCJvcmdfaWQiOiJ4NUlvVVZDclI5amNPUXUwNUc0UGtIeEtqeEtTV3daTCIsImlhdCI6MTc1MTUyMTA4MywidmVyIjoxfQ._JHn_LcpDX4F5s2YnQqeBaP1-iWnp6VPD02dQM7VQLk"
         model = md.vl(api_key=api_key)
         return model
     except Exception as e:
@@ -64,51 +43,16 @@ def validate_dynamic_master(image, master_image, model):
         return {"error": str(e), "status": "Failed"}
 
 def main():
-    st.title("🔍 OCR Validation Tool")
+    st.title("OCR Validation Tool")
     st.markdown("---")
     
-    # Sidebar for API key management
-    with st.sidebar:
-        st.header("⚙️ Configuration")
-        
-        # API Key management
-        api_key_input = st.text_input(
-            "Moondream API Key",
-            type="password",
-            value=st.session_state.get("moondream_api_key", ""),
-            help="Enter your Moondream API key. Get one at https://console.moondream.ai"
-        )
-        
-        if st.button("Save API Key"):
-            if api_key_input:
-                st.session_state.moondream_api_key = api_key_input
-                st.success("API key saved!")
-                st.rerun()
-            else:
-                st.error("Please enter a valid API key")
-        
-        if st.button("Clear API Key"):
-            if "moondream_api_key" in st.session_state:
-                del st.session_state.moondream_api_key
-                st.success("API key cleared!")
-                st.rerun()
-        
-        st.markdown("---")
-        
-        # Instructions
-        st.markdown("""
-        ### 📋 Instructions
-        1. **Add API Key**: Enter your Moondream API key above
-        2. **Upload Images**: Upload both the test image and master image
-        3. **Run OCR**: Click "Validate OCR" to compare texts
-        4. **Review Results**: Check the validation results
-        """)
+    # Remove sidebar for configuration
     
     # Main content area
     col1, col2 = st.columns(2)
     
     with col1:
-        st.header("📤 Test Image")
+        st.header("Test Image")
         test_image = st.file_uploader(
             "Upload test image",
             type=['jpg', 'jpeg', 'png'],
@@ -121,7 +65,7 @@ def main():
             st.image(image, caption="Test Image", use_container_width=True)
     
     with col2:
-        st.header("📤 Master Image")
+        st.header("Master Image")
         master_image = st.file_uploader(
             "Upload master image",
             type=['jpg', 'jpeg', 'png'],
@@ -136,7 +80,7 @@ def main():
     st.markdown("---")
     
     # Validation section
-    if st.button("🔍 Validate OCR", type="primary", use_container_width=True):
+    if st.button("Validate OCR", type="primary", use_container_width=True):
         if not test_image or not master_image:
             st.error("Please upload both test and master images!")
             return
@@ -144,7 +88,7 @@ def main():
         # Initialize model
         model = init_model()
         if not model:
-            st.error("Please configure your Moondream API key in the sidebar!")
+            st.error("Error initializing model!")
             return
         
         with st.spinner("Processing images and extracting text..."):
@@ -156,19 +100,19 @@ def main():
             result = validate_dynamic_master(test_img, master_img, model)
         
         # Display results
-        st.header("📊 Validation Results")
+        st.header("Validation Results")
         
         if "error" in result:
             st.error(f"Validation failed: {result['error']}")
         else:
             # Status indicator
             if result["status"] == "All Good":
-                st.success(f"✅ Status: {result['status']}")
+                st.success(f"Status: {result['status']}")
             else:
-                st.error(f"❌ Status: {result['status']}")
+                st.error(f"Status: {result['status']}")
             
             # Create tabs for detailed results
-            tab1, tab2, tab3 = st.tabs(["📝 Extracted Text", "📋 Master Text", "🔍 Comparison"])
+            tab1, tab2, tab3 = st.tabs(["Extracted Text", "Master Text", "Comparison"])
             
             with tab1:
                 st.subheader("Text from Test Image")
@@ -195,12 +139,12 @@ def main():
                     extracted = result["extracted_text"]
                     master = result["master_text"]
                     
-                    st.write("**Length Comparison:**")
+                    st.write("Length Comparison:")
                     st.write(f"- Extracted text: {len(extracted)} characters")
                     st.write(f"- Master text: {len(master)} characters")
                     
                     # Show first few different characters
-                    st.write("**Text Differences:**")
+                    st.write("Text Differences:")
                     for i, (c1, c2) in enumerate(zip(extracted, master)):
                         if c1 != c2:
                             st.write(f"Position {i}: '{c1}' vs '{c2}'")
@@ -208,15 +152,14 @@ def main():
     
     # Additional features section
     st.markdown("---")
-    with st.expander("💡 Additional Features"):
+    with st.expander("Additional Features"):
         st.markdown("""
         ### Features Available:
-        - **Text Extraction**: Extract text from any image using Moondream Vision Language Model
-        - **Text Comparison**: Compare extracted text with master/reference text
-        - **Validation Status**: Get clear pass/fail results
-        - **Detailed Analysis**: Character-by-character comparison for mismatches
-        - **Secure API Key Management**: Store API keys securely using Streamlit's session state
-        
+        - Text Extraction: Extract text from any image using Moondream Vision Language Model
+        - Text Comparison: Compare extracted text with master/reference text
+        - Validation Status: Get clear pass/fail results
+        - Detailed Analysis: Character-by-character comparison for mismatches
+        - Secure API Key Management: (Now hardcoded for demo)
         ### About Moondream:
         Moondream is a small but powerful vision-language model that can:
         - Extract text from images (OCR)
