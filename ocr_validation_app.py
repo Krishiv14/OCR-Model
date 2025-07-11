@@ -5,6 +5,7 @@ import pandas as pd
 import moondream as md
 from PIL import Image
 import io
+import difflib
 
 # Remove page config
 # Remove sidebar configuration header and section
@@ -19,16 +20,16 @@ def init_model():
         st.error(f"Error initializing model: {str(e)}")
         return None
 
-def validate_dynamic_master(image, master_image, model):
+def validate_dynamic_master(image, master_image, model, prompt):
     """
-    Validate OCR extraction by comparing text from an image with a master image
+    Validate OCR extraction by comparing text from an image with a master image using a custom prompt
     """
     try:
         # Extract text from the main image
-        extracted_text = model.query(image, question="Extract all text from this image")["answer"].strip()
+        extracted_text = model.query(image, question=prompt)["answer"].strip()
 
         # Extract text from the master image
-        master_text = model.query(master_image, question="Extract all text from this image")["answer"].strip()
+        master_text = model.query(master_image, question=prompt)["answer"].strip()
 
         # Compare the texts
         result = {
@@ -51,31 +52,64 @@ def main():
 
     with col1:
         st.header("Test Image")
-        test_image = st.file_uploader(
-            "Upload test image",
-            type=['jpg', 'jpeg', 'png'],
-            key="test_image",
-            help="Upload the image you want to extract text from"
-        )
-
+        test_tab_upload, test_tab_camera = st.tabs(["📁 Upload", "📷 Camera"])
+        test_image = None
+        with test_tab_upload:
+            test_image = st.file_uploader(
+                "Upload test image",
+                type=['jpg', 'jpeg', 'png'],
+                key="test_image_upload",
+                help="Upload the image you want to extract text from"
+            )
+        with test_tab_camera:
+            test_image_camera = st.camera_input(
+                "Capture test image",
+                key="test_image_camera"
+            )
+            if test_image_camera:
+                test_image = test_image_camera
         if test_image:
             image = Image.open(test_image)
             st.image(image, caption="Test Image", use_container_width=True)
 
     with col2:
         st.header("Master Image")
-        master_image = st.file_uploader(
-            "Upload master image",
-            type=['jpg', 'jpeg', 'png'],
-            key="master_image",
-            help="Upload the master/reference image to compare against"
-        )
-
+        master_tab_upload, master_tab_camera = st.tabs(["📁 Upload", "📷 Camera"])
+        master_image = None
+        with master_tab_upload:
+            master_image = st.file_uploader(
+                "Upload master image",
+                type=['jpg', 'jpeg', 'png'],
+                key="master_image_upload",
+                help="Upload the master/reference image to compare against"
+            )
+        with master_tab_camera:
+            master_image_camera = st.camera_input(
+                "Capture master image",
+                key="master_image_camera"
+            )
+            if master_image_camera:
+                master_image = master_image_camera
         if master_image:
             master_img = Image.open(master_image)
             st.image(master_img, caption="Master Image", use_container_width=True)
 
     st.markdown("---")
+
+    # Only show custom prompt option after both images are uploaded
+    if test_image and master_image:
+        use_custom_prompt = st.checkbox("Use a custom prompt for Moondream", value=False)
+        if use_custom_prompt:
+            st.subheader("Custom Prompt for Moondream")
+            prompt = st.text_area(
+                "Enter your question for the Moondream model:",
+                value="Extract all text from this image",
+                help="You can ask anything about the image, e.g. 'What is the invoice number?' or 'Extract all text from this image'"
+            )
+        else:
+            prompt = "Extract all text from this image"
+    else:
+        prompt = "Extract all text from this image"
 
     # Validation section
     if st.button("Validate OCR", type="primary", use_container_width=True):
@@ -94,8 +128,8 @@ def main():
             test_img = Image.open(test_image)
             master_img = Image.open(master_image)
 
-            # Perform validation
-            result = validate_dynamic_master(test_img, master_img, model)
+            # Perform validation with custom prompt
+            result = validate_dynamic_master(test_img, master_img, model, prompt)
 
         # Display results
         st.header("Validation Results")
@@ -127,7 +161,9 @@ def main():
                 with col_a:
                     st.metric("Comparison Status", result["comparison"])
                 with col_b:
-                    match_percentage = 100 if result["comparison"] == "Match" else 0
+                    # Calculate match percentage using difflib
+                    matcher = difflib.SequenceMatcher(None, result["extracted_text"], result["master_text"])
+                    match_percentage = round(matcher.ratio() * 100, 2)
                     st.metric("Match Percentage", f"{match_percentage}%")
 
                 # Character-by-character comparison
@@ -141,12 +177,24 @@ def main():
                     st.write(f"- Extracted text: {len(extracted)} characters")
                     st.write(f"- Master text: {len(master)} characters")
 
-                    # Show first few different characters
+                    # Show all differences using difflib.ndiff
                     st.write("Text Differences:")
-                    for i, (c1, c2) in enumerate(zip(extracted, master)):
-                        if c1 != c2:
-                            st.write(f"Position {i}: '{c1}' vs '{c2}'")
-                            break
+                    diff = list(difflib.ndiff(master, extracted))
+                    diff_display = []
+                    for i, d in enumerate(diff):
+                        if d[0] == ' ':
+                            continue  # skip matches
+                        elif d[0] == '-':
+                            diff_display.append(f"Position {i}: Missing in extracted: '{d[-1]}'")
+                        elif d[0] == '+':
+                            diff_display.append(f"Position {i}: Extra in extracted: '{d[-1]}'")
+                        elif d[0] == '?':
+                            continue  # skip markers
+                    if diff_display:
+                        for line in diff_display:
+                            st.write(line)
+                    else:
+                        st.write("No character-level differences found.")
 
     # Additional features section
     st.markdown("---")
