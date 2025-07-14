@@ -5,7 +5,7 @@ import moondream as md
 from PIL import Image
 import io
 import difflib
-#import cv2
+import cv2
 
 # Page configuration
 st.set_page_config(
