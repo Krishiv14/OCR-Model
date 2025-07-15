@@ -178,7 +178,7 @@ def segment_image_kmeans(image, k=3):
 
 def ocr_validation_page():
     """OCR Validation Tool Page"""
-    st.title("📄 OCR Validation Tool")
+    st.title("OCR Validation Tool")
     st.markdown("---")
 
     # Main content area
@@ -186,7 +186,7 @@ def ocr_validation_page():
 
     with col1:
         st.header("Test Image")
-        test_tab_upload, test_tab_camera = st.tabs(["📁 Upload", "📷 Camera"])
+        test_tab_upload, test_tab_camera = st.tabs(["Upload", "Camera"])
         test_image = None
         with test_tab_upload:
             test_image = st.file_uploader(
@@ -208,7 +208,7 @@ def ocr_validation_page():
 
     with col2:
         st.header("Master Image")
-        master_tab_upload, master_tab_camera = st.tabs(["📁 Upload", "📷 Camera"])
+        master_tab_upload, master_tab_camera = st.tabs(["Upload", "Camera"])
         master_image = None
         with master_tab_upload:
             master_image = st.file_uploader(
@@ -349,7 +349,7 @@ def defect_detection_page():
     
     with col1:
         st.header("Input Image")
-        upload_tab, camera_tab = st.tabs(["📁 Upload", "📷 Camera"])
+        upload_tab, camera_tab = st.tabs(["Upload", "Camera"])
         
         uploaded_image = None
         with upload_tab:
@@ -582,7 +582,7 @@ def display_simple_results(image, results, detection_type, sensitivity):
 
 def main():
     # Sidebar navigation
-    st.sidebar.title("🌙 AI Moon Tools")
+    st.sidebar.title("AI Moon Tools")
     st.sidebar.markdown("---")
     
     # Navigation
