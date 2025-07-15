@@ -6,11 +6,15 @@ from PIL import Image
 import io
 import difflib
 import cv2
+import os
+
+# This will always point to the godrej_logo.png in the project root
+logo_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'godrej_logo.png'))
+# st.image(logo_path, width=200, caption="Godrej")  # Remove logo from main page
 
 # Page configuration
 st.set_page_config(
     page_title="AI Moon - Simple Multi-Tool Application",
-    page_icon="🌙",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -178,7 +182,7 @@ def segment_image_kmeans(image, k=3):
 
 def ocr_validation_page():
     """OCR Validation Tool Page"""
-    st.title("📄 OCR Validation Tool")
+    st.title("OCR Validation Tool")
     st.markdown("---")
 
     # Main content area
@@ -186,7 +190,7 @@ def ocr_validation_page():
 
     with col1:
         st.header("Test Image")
-        test_tab_upload, test_tab_camera = st.tabs(["📁 Upload", "📷 Camera"])
+        test_tab_upload, test_tab_camera = st.tabs(["Upload", "Camera"])
         test_image = None
         with test_tab_upload:
             test_image = st.file_uploader(
@@ -208,7 +212,7 @@ def ocr_validation_page():
 
     with col2:
         st.header("Master Image")
-        master_tab_upload, master_tab_camera = st.tabs(["📁 Upload", "📷 Camera"])
+        master_tab_upload, master_tab_camera = st.tabs(["Upload", "Camera"])
         master_image = None
         with master_tab_upload:
             master_image = st.file_uploader(
@@ -349,7 +353,7 @@ def defect_detection_page():
     
     with col1:
         st.header("Input Image")
-        upload_tab, camera_tab = st.tabs(["📁 Upload", "📷 Camera"])
+        upload_tab, camera_tab = st.tabs(["Upload", "Camera"])
         
         uploaded_image = None
         with upload_tab:
@@ -582,7 +586,8 @@ def display_simple_results(image, results, detection_type, sensitivity):
 
 def main():
     # Sidebar navigation
-    st.sidebar.title("🌙 AI Moon Tools")
+    st.sidebar.image(logo_path, width=150, caption="Godrej")
+    # st.sidebar.title("\U0001F319 AI Moon Tools")  # Remove sidebar title
     st.sidebar.markdown("---")
     
     # Navigation
