@@ -178,6 +178,8 @@ OCR-Model/
 - **Morphological Operations**: Noise reduction and feature enhancement
 - **Statistical Analysis**: Quality metrics and anomaly detection
 
+### The final application is accessible at 
+- [Application](https://defect-detection.streamlit.app)
 ## 🚀 Performance Tips
 
 1. **Image Quality**: Use high-resolution images for better detection
@@ -224,3 +226,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ---
 
 **AI Moon Multi-Tool Application** - Empowering AI-driven image analysis and validation 🌙 
+
